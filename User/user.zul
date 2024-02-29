@@ -1,0 +1,79 @@
+<zk>
+	<style>
+		.h1 {
+		font-size: 24px;
+		font-weight: bold;
+		padding: 20px;
+		background-color: blue;
+		color: white;
+		width: 100%;
+		display: block;
+		}
+
+	</style>
+	<window viewModel="@id('vm') @init('org.example.ViewController')"
+			validationMessages="@id('vmsgs')"
+			sclass="my-theme">
+		<style>
+			.large-image {
+			width: 200px; /* Set the width to your desired size */
+			height: auto; /* Maintain aspect ratio */
+			}
+		</style>
+		<image src="/bplogo.png" class="large-image" onImageFailed="alert('Image not found!');"/>
+		<div style="margin-top: 20px;"></div>
+		<label sclass="h1"> User Administration </label>
+		<div style="margin-top: 20px;"></div>
+
+		<grid model="@load(vm.userList)" height="400px" style="overflow:auto;">
+			<columns>
+				<column label="Active"/>
+				<column label="Username"/>
+				<column label="Name"/>
+				<column label="Email"/>
+				<column label="Role"/>
+				<column label="Edit"/>
+			</columns>
+			<template name="model" var="user">
+				<row sclass="@load(vm.selectedUser eq user ? 'z-row-background-color-on-select' : '')"
+					 onClick="@command('selectUser', user=user)">
+					<hbox>
+						<checkbox checked="@bind(user.active)"/>
+					</hbox>
+					<label value="@load(user.username)"/>
+					<label value="@load(user.name)"/>
+					<label value="@load(user.email)"/>
+					<label value="@load(user.role)"/>
+					<button label="Edit" onClick="@command('updateLabel', user=user)"/>
+				</row>
+			</template>
+		</grid>
+		<div style="margin-top: 20px;"></div>
+		<grid sclass = "displayUsers">
+			<rows>
+				<row>
+					<label id="userNameLabel" value="Username"/>
+					<textbox id="userNameTextbox"/>
+				</row>
+				<row>
+					<label id="nameLabel" value="Name"/>
+					<textbox id="nameTextbox"/>
+				</row>
+				<row>
+					<label id="emailLabel" value="Email"/>
+					<textbox id="emailTextbox"/>
+				</row>
+				<row>
+					<label id="roleLabel" value="Role"/>
+					<textbox id="roleTextbox"/>
+				</row>
+				<row>
+					<label id="activeLabel" value="Active"/>
+					<checkbox id="activeCheckbox"/>
+				</row>
+			</rows>
+		</grid>
+		<div style="margin-top: 20px;"></div>
+		<button label="Save" onClick="@command('callUpdate')"/>
+	</window>
+</zk>
